@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Weather Dashboard - Create Account</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Segoe UI',sans-serif;
+
+    background:linear-gradient(
+        135deg,
+        #0f172a,
+        #1e3a8a,
+        #2563eb
+    );
+
+    padding:20px;
+}
+
+.card{
+    width:100%;
+    max-width:700px;
+
+    padding:40px;
+
+    background:rgba(255,255,255,0.95);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:30px;
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,0.25);
+
+    border:1px solid rgba(255,255,255,0.4);
+}
+
+.card:hover{
+    transform:translateY(-5px);
+}
+
+.logo{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+.logo h1{
+    color:#1e3a8a;
+    margin-bottom:5px;
+}
+
+.logo p{
+    color:#64748b;
+    font-size:14px;
+}
+
+.section-title{
+    color:#1e3a8a;
+    margin-bottom:15px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.input-group{
+    display:flex;
+    flex-direction:column;
+}
+
+label{
+    margin-bottom:6px;
+    font-weight:600;
+    color:#374151;
+}
+
+input:focus{
+    border-color:#2563eb;
+    box-shadow:
+    0 0 20px rgba(37,99,235,.2);
+
+    outline:none;
+}
+
+
+input{
+    width:100%;
+    padding:15px;
+    border:2px solid #e5e7eb;
+    border-radius:14px;
+    font-size:15px;
+    transition:.3s;
+}
+
+.full-width{
+    grid-column:1 / span 2;
+}
+
+button{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+
+    background:
+    linear-gradient(
+    90deg,
+    #2563eb,
+    #1d4ed8
+    );
+
+    color:white;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+button:hover{
+    transform:translateY(-2px);
+    transition:.3s;
+}
+
+.login-link{
+    text-align:center;
+    margin-top:20px;
+}
+
+.login-link a{
+    text-decoration:none;
+    color:#2563eb;
+    font-weight:600;
+}
+
+.login-link a:hover{
+    text-decoration:underline;
+}
+
+.footer{
+    text-align:center;
+    margin-top:20px;
+    color:#64748b;
+    font-size:13px;
+
+}
+.brand{
+    text-align:center;
+    font-size:13px;
+    letter-spacing:3px;
+    color:#2563eb;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#64748b;
+    margin-bottom:25px;
+}
+
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+
+<div class="logo">
+
+    
+
+    <p>
+        Weather Intelligence Platform
+    </p>
+
+</div>
+
+<h3 class="section-title">
+    Create New Account
+</h3>
+
+<form method="POST">
+
+    <div class="grid">
+
+        <div class="input-group full-width">
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                name="name"
+                placeholder="Enter your full name"
+                required>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Username</label>
+
+            <input
+                type="text"
+                name="username"
+                placeholder="Choose username"
+                required>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Mobile Number</label>
+
+            <input
+        type="tel"
+        name="mobile"
+        placeholder="Enter mobile number"
+        pattern="[0-9]{10}"
+        maxlength="10"
+        required>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Date of Birth</label>
+
+            <input
+                type="date"
+                name="dob"
+                required>
+
+        </div>
+
+        <div class="input-group">
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                name="password"
+                  minlength="8"
+                  maxlength="20"
+                placeholder="Create password"
+                required>
+
+        </div>
+
+    </div>
+
+    <button type="submit">
+        Create Account
+    </button>
+
+</form>
+
+<div class="login-link">
+
+    <a href="/login">
+        Already have an account? Sign In
+    </a>
+
+</div>
+
+<div class="footer">
+
+     Weather Intelligence Platform
+
+</div>
+
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+
+<title>Login</title>
+
+<style>
+
+    *{
+        margin:0;
+        padding:0;
+        box-sizing:border-box;
+    }
+
+    body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-family:'Segoe UI',sans-serif;
+
+    background:linear-gradient(
+        135deg,
+        #0f172a,
+        #1e3a8a,
+        #2563eb
+    );
+
+    padding:20px;
+}
+
+    .card{
+    width:100%;
+    max-width:500px;
+
+    padding:40px;
+
+    background:rgba(255,255,255,0.95);
+
+    backdrop-filter:blur(20px);
+
+    border-radius:30px;
+
+    box-shadow:
+    0 20px 50px rgba(0,0,0,0.25);
+
+    border:1px solid rgba(255,255,255,0.4);
+}
+    h1{
+        text-align:center;
+        margin-bottom:25px;
+        color:#1e3a8a;
+    }
+
+    label{
+        display:block;
+        margin-bottom:6px;
+        font-weight:600;
+        color:#374151;
+    }
+
+    input{
+    width:100%;
+    padding:15px;
+
+    border:2px solid #e5e7eb;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    transition:.3s;
+}
+    
+
+    input:focus{
+    outline:none;
+
+    border-color:#2563eb;
+
+    box-shadow:
+    0 0 20px rgba(37,99,235,.2);
+}
+
+   button{
+    width:100%;
+    padding:16px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:
+    linear-gradient(
+    90deg,
+    #2563eb,
+    #1d4ed8
+    );
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+}
+    button:hover{
+        background:#1d4ed8;
+    }
+
+    .register-link{
+        text-align:center;
+        margin-top:18px;
+    }
+
+    .register-link a{
+        text-decoration:none;
+        color:#2563eb;
+        font-weight:600;
+    }
+
+    .register-link a:hover{
+        text-decoration:underline;
+    }
+
+    .footer{
+        text-align:center;
+        margin-top:20px;
+        color:#64748b;
+        font-size:13px;
+    }
+
+.brand{
+    text-align:center;
+    font-size:13px;
+    letter-spacing:3px;
+    color:#2563eb;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+.subtitle{
+    text-align:center;
+    color:#64748b;
+    margin-bottom:25px;
+}
+
+.show-password{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin-top:15px;
+
+    margin-bottom:18px;
+}
+
+.show-password input{
+
+    width:auto;
+
+    margin:0;
+}
+
+.show-password label{
+
+    margin:0;
+
+    font-size:14px;
+
+    color:#64748b;
+
+    font-weight:500;
+
+    cursor:pointer;
+}
+</style>
+
+
+</head>
+
+<body>
+
+
+<div class="card">
+    <div class="brand">
+    
+</div>
+
+    <h1>Login</h1>
+    <p class="subtitle">
+Access your Weather Dashboard
+</p>
+
+    <form method="POST">
+
+        <label>Username</label>
+
+        <input
+            type="text"
+            name="username"
+            required>
+
+        <label>Password</label>
+
+        <input
+            type="password"
+            name="password"
+            required>
+            <div class="show-password">
+
+    <input
+        type="checkbox"
+        onclick="togglePassword()">
+
+    <label>Show Password</label>
+
+</div>
+
+
+
+        <button type="submit">
+            Login
+        </button>
+
+    </form>
+
+    <div class="register-link">
+
+        <a href="/register">
+            Create New Account
+        </a>
+
+    </div>
+
+    <div class="footer">
+
+        Weather Analytics Dashboard
+
+    </div>
+
+</div>
+<script>
+
+function togglePassword(){
+
+    let x =
+    document.getElementsByName("password")[0];
+
+    if(x.type=="password")
+        x.type="text";
+    else
+        x.type="password";
+}
+
+</script>
+
+</body>
+
+</html>
