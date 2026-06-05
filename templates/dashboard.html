@@ -1450,17 +1450,6 @@ function renderSuggestions(q) {
   // Remove old items (keep header)
   sbox.querySelectorAll('.sugg-item, .sugg-empty, .sugg-section').forEach(el => el.remove());
 
-  if (!q) {
-    // Show popular cities on focus
-    const header = sbox.querySelector('.sugg-header');
-    header.textContent = 'Popular Cities';
-    currentMatches = popularCities.map(name => cities.find(c => c.n === name)).filter(Boolean);
-    currentMatches.forEach(c => sbox.appendChild(buildSuggItem(c, '', true)));
-    activeIdx = -1;
-    sbox.classList.add('show');
-    return;
-  }
-
   // Update header
   sbox.querySelector('.sugg-header').textContent = 'Suggestions';
 
@@ -1498,6 +1487,7 @@ function renderSuggestions(q) {
 
 inp.addEventListener('input', function() {
   const q = this.value.trim();
+  if (!q) { closeSugg(); return; }
   renderSuggestions(q);
 });
 
@@ -1535,7 +1525,7 @@ inp.addEventListener('keydown', function(e) {
 inp.addEventListener('blur', () => setTimeout(closeSugg, 200));
 inp.addEventListener('focus', function() {
   const q = this.value.trim();
-  renderSuggestions(q);
+  if (q) renderSuggestions(q);
 });
 
 {% if weather %}
