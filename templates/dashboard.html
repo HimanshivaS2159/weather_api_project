@@ -221,6 +221,20 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
 }
 .sugg-item:hover .sugg-arrow, .sugg-item.active .sugg-arrow { opacity:1; color:var(--accent) }
 
+/* No results */
+.sugg-empty {
+  padding:20px 16px; text-align:center; color:var(--text-3);
+}
+
+/* Popular label */
+.sugg-section {
+  padding:6px 14px 4px;
+  font-size:10px; font-weight:700; letter-spacing:.08em;
+  color:var(--text-3); text-transform:uppercase;
+  background:var(--bg-soft);
+  border-bottom:1px solid var(--border);
+}
+
 .search-btn {
   height:48px; padding:0 24px;
   background:linear-gradient(135deg,#2563eb,#1d4ed8);
@@ -1219,48 +1233,168 @@ function useMyLocation() {
 
 // ── Suggestions with keyboard nav ──
 const cities = [
-  {n:'Mumbai',     c:'IN', region:'Maharashtra'},
-  {n:'Delhi',      c:'IN', region:'NCT'},
-  {n:'Bangalore',  c:'IN', region:'Karnataka'},
-  {n:'Hyderabad',  c:'IN', region:'Telangana'},
-  {n:'Chennai',    c:'IN', region:'Tamil Nadu'},
-  {n:'Kolkata',    c:'IN', region:'West Bengal'},
-  {n:'Pune',       c:'IN', region:'Maharashtra'},
-  {n:'Jaipur',     c:'IN', region:'Rajasthan'},
-  {n:'Ahmedabad',  c:'IN', region:'Gujarat'},
-  {n:'Lucknow',    c:'IN', region:'Uttar Pradesh'},
-  {n:'Chandigarh', c:'IN', region:'Punjab'},
-  {n:'Bhopal',     c:'IN', region:'Madhya Pradesh'},
-  {n:'Nagpur',     c:'IN', region:'Maharashtra'},
-  {n:'Surat',      c:'IN', region:'Gujarat'},
-  {n:'Indore',     c:'IN', region:'Madhya Pradesh'},
-  {n:'Patna',      c:'IN', region:'Bihar'},
-  {n:'Agra',       c:'IN', region:'Uttar Pradesh'},
-  {n:'Vadodara',   c:'IN', region:'Gujarat'},
-  {n:'London',     c:'GB', region:'England'},
-  {n:'New York',   c:'US', region:'New York'},
-  {n:'Paris',      c:'FR', region:'Île-de-France'},
-  {n:'Tokyo',      c:'JP', region:'Kanto'},
-  {n:'Dubai',      c:'AE', region:'UAE'},
-  {n:'Singapore',  c:'SG', region:'Singapore'},
-  {n:'Sydney',     c:'AU', region:'New South Wales'},
-  {n:'Toronto',    c:'CA', region:'Ontario'},
-  {n:'Berlin',     c:'DE', region:'Germany'},
-  {n:'Moscow',     c:'RU', region:'Russia'},
-  {n:'Beijing',    c:'CN', region:'China'},
-  {n:'Bangkok',    c:'TH', region:'Thailand'},
-  {n:'Istanbul',   c:'TR', region:'Turkey'},
-  {n:'Cairo',      c:'EG', region:'Egypt'},
-  {n:'Karachi',    c:'PK', region:'Sindh'},
-  {n:'Dhaka',      c:'BD', region:'Bangladesh'},
+  // India
+  {n:'Mumbai',       c:'IN', region:'Maharashtra'},
+  {n:'Delhi',        c:'IN', region:'NCT'},
+  {n:'Bangalore',    c:'IN', region:'Karnataka'},
+  {n:'Bengaluru',    c:'IN', region:'Karnataka'},
+  {n:'Hyderabad',    c:'IN', region:'Telangana'},
+  {n:'Chennai',      c:'IN', region:'Tamil Nadu'},
+  {n:'Kolkata',      c:'IN', region:'West Bengal'},
+  {n:'Pune',         c:'IN', region:'Maharashtra'},
+  {n:'Jaipur',       c:'IN', region:'Rajasthan'},
+  {n:'Ahmedabad',    c:'IN', region:'Gujarat'},
+  {n:'Lucknow',      c:'IN', region:'Uttar Pradesh'},
+  {n:'Chandigarh',   c:'IN', region:'Punjab'},
+  {n:'Bhopal',       c:'IN', region:'Madhya Pradesh'},
+  {n:'Nagpur',       c:'IN', region:'Maharashtra'},
+  {n:'Surat',        c:'IN', region:'Gujarat'},
+  {n:'Indore',       c:'IN', region:'Madhya Pradesh'},
+  {n:'Patna',        c:'IN', region:'Bihar'},
+  {n:'Agra',         c:'IN', region:'Uttar Pradesh'},
+  {n:'Vadodara',     c:'IN', region:'Gujarat'},
+  {n:'Varanasi',     c:'IN', region:'Uttar Pradesh'},
+  {n:'Amritsar',     c:'IN', region:'Punjab'},
+  {n:'Dehradun',     c:'IN', region:'Uttarakhand'},
+  {n:'Shimla',       c:'IN', region:'Himachal Pradesh'},
+  {n:'Manali',       c:'IN', region:'Himachal Pradesh'},
+  {n:'Goa',          c:'IN', region:'Goa'},
+  {n:'Kochi',        c:'IN', region:'Kerala'},
+  {n:'Thiruvananthapuram', c:'IN', region:'Kerala'},
+  {n:'Coimbatore',   c:'IN', region:'Tamil Nadu'},
+  {n:'Visakhapatnam',c:'IN', region:'Andhra Pradesh'},
+  {n:'Ranchi',       c:'IN', region:'Jharkhand'},
+  {n:'Guwahati',     c:'IN', region:'Assam'},
+  {n:'Bhubaneswar',  c:'IN', region:'Odisha'},
+  {n:'Mysuru',       c:'IN', region:'Karnataka'},
+  {n:'Raipur',       c:'IN', region:'Chhattisgarh'},
+  {n:'Jodhpur',      c:'IN', region:'Rajasthan'},
+  {n:'Udaipur',      c:'IN', region:'Rajasthan'},
+  {n:'Noida',        c:'IN', region:'Uttar Pradesh'},
+  {n:'Gurgaon',      c:'IN', region:'Haryana'},
+  {n:'Faridabad',    c:'IN', region:'Haryana'},
+  {n:'Meerut',       c:'IN', region:'Uttar Pradesh'},
+  {n:'Kanpur',       c:'IN', region:'Uttar Pradesh'},
+  {n:'Allahabad',    c:'IN', region:'Uttar Pradesh'},
+  {n:'Prayagraj',    c:'IN', region:'Uttar Pradesh'},
+  // World
+  {n:'London',       c:'GB', region:'England'},
+  {n:'Manchester',   c:'GB', region:'England'},
+  {n:'Birmingham',   c:'GB', region:'England'},
+  {n:'Edinburgh',    c:'GB', region:'Scotland'},
+  {n:'New York',     c:'US', region:'New York'},
+  {n:'Los Angeles',  c:'US', region:'California'},
+  {n:'Chicago',      c:'US', region:'Illinois'},
+  {n:'Houston',      c:'US', region:'Texas'},
+  {n:'Phoenix',      c:'US', region:'Arizona'},
+  {n:'Miami',        c:'US', region:'Florida'},
+  {n:'Seattle',      c:'US', region:'Washington'},
+  {n:'San Francisco',c:'US', region:'California'},
+  {n:'Boston',       c:'US', region:'Massachusetts'},
+  {n:'Washington',   c:'US', region:'DC'},
+  {n:'Paris',        c:'FR', region:'Île-de-France'},
+  {n:'Lyon',         c:'FR', region:'Auvergne-Rhône-Alpes'},
+  {n:'Marseille',    c:'FR', region:'Provence'},
+  {n:'Tokyo',        c:'JP', region:'Kanto'},
+  {n:'Osaka',        c:'JP', region:'Kansai'},
+  {n:'Kyoto',        c:'JP', region:'Kansai'},
+  {n:'Dubai',        c:'AE', region:'UAE'},
+  {n:'Abu Dhabi',    c:'AE', region:'UAE'},
+  {n:'Singapore',    c:'SG', region:'Singapore'},
+  {n:'Sydney',       c:'AU', region:'New South Wales'},
+  {n:'Melbourne',    c:'AU', region:'Victoria'},
+  {n:'Brisbane',     c:'AU', region:'Queensland'},
+  {n:'Toronto',      c:'CA', region:'Ontario'},
+  {n:'Vancouver',    c:'CA', region:'British Columbia'},
+  {n:'Montreal',     c:'CA', region:'Quebec'},
+  {n:'Berlin',       c:'DE', region:'Germany'},
+  {n:'Munich',       c:'DE', region:'Bavaria'},
+  {n:'Frankfurt',    c:'DE', region:'Hesse'},
+  {n:'Hamburg',      c:'DE', region:'Germany'},
+  {n:'Moscow',       c:'RU', region:'Russia'},
+  {n:'Saint Petersburg', c:'RU', region:'Russia'},
+  {n:'Beijing',      c:'CN', region:'China'},
+  {n:'Shanghai',     c:'CN', region:'China'},
+  {n:'Guangzhou',    c:'CN', region:'China'},
+  {n:'Shenzhen',     c:'CN', region:'China'},
+  {n:'Bangkok',      c:'TH', region:'Thailand'},
+  {n:'Chiang Mai',   c:'TH', region:'Thailand'},
+  {n:'Istanbul',     c:'TR', region:'Turkey'},
+  {n:'Ankara',       c:'TR', region:'Turkey'},
+  {n:'Cairo',        c:'EG', region:'Egypt'},
+  {n:'Karachi',      c:'PK', region:'Sindh'},
+  {n:'Lahore',       c:'PK', region:'Punjab'},
+  {n:'Islamabad',    c:'PK', region:'Pakistan'},
+  {n:'Dhaka',        c:'BD', region:'Bangladesh'},
+  {n:'Colombo',      c:'LK', region:'Sri Lanka'},
+  {n:'Kathmandu',    c:'NP', region:'Nepal'},
+  {n:'Kabul',        c:'AF', region:'Afghanistan'},
+  {n:'Tehran',       c:'IR', region:'Iran'},
+  {n:'Baghdad',      c:'IQ', region:'Iraq'},
+  {n:'Riyadh',       c:'SA', region:'Saudi Arabia'},
+  {n:'Jeddah',       c:'SA', region:'Saudi Arabia'},
+  {n:'Kuwait City',  c:'KW', region:'Kuwait'},
+  {n:'Doha',         c:'QA', region:'Qatar'},
+  {n:'Muscat',       c:'OM', region:'Oman'},
+  {n:'Nairobi',      c:'KE', region:'Kenya'},
+  {n:'Lagos',        c:'NG', region:'Nigeria'},
+  {n:'Johannesburg', c:'ZA', region:'South Africa'},
+  {n:'Cape Town',    c:'ZA', region:'South Africa'},
+  {n:'Casablanca',   c:'MA', region:'Morocco'},
+  {n:'Addis Ababa',  c:'ET', region:'Ethiopia'},
+  {n:'Amsterdam',    c:'NL', region:'Netherlands'},
+  {n:'Brussels',     c:'BE', region:'Belgium'},
+  {n:'Vienna',       c:'AT', region:'Austria'},
+  {n:'Zurich',       c:'CH', region:'Switzerland'},
+  {n:'Geneva',       c:'CH', region:'Switzerland'},
+  {n:'Rome',         c:'IT', region:'Lazio'},
+  {n:'Milan',        c:'IT', region:'Lombardy'},
+  {n:'Naples',       c:'IT', region:'Campania'},
+  {n:'Madrid',       c:'ES', region:'Community of Madrid'},
+  {n:'Barcelona',    c:'ES', region:'Catalonia'},
+  {n:'Lisbon',       c:'PT', region:'Portugal'},
+  {n:'Stockholm',    c:'SE', region:'Sweden'},
+  {n:'Oslo',         c:'NO', region:'Norway'},
+  {n:'Copenhagen',   c:'DK', region:'Denmark'},
+  {n:'Helsinki',     c:'FI', region:'Finland'},
+  {n:'Warsaw',       c:'PL', region:'Poland'},
+  {n:'Prague',       c:'CZ', region:'Czech Republic'},
+  {n:'Budapest',     c:'HU', region:'Hungary'},
+  {n:'Athens',       c:'GR', region:'Greece'},
+  {n:'Buenos Aires', c:'AR', region:'Argentina'},
+  {n:'São Paulo',    c:'BR', region:'Brazil'},
+  {n:'Rio de Janeiro',c:'BR',region:'Brazil'},
+  {n:'Mexico City',  c:'MX', region:'Mexico'},
+  {n:'Lima',         c:'PE', region:'Peru'},
+  {n:'Bogota',       c:'CO', region:'Colombia'},
+  {n:'Santiago',     c:'CL', region:'Chile'},
+  {n:'Kuala Lumpur', c:'MY', region:'Malaysia'},
+  {n:'Jakarta',      c:'ID', region:'Indonesia'},
+  {n:'Manila',       c:'PH', region:'Philippines'},
+  {n:'Ho Chi Minh City', c:'VN', region:'Vietnam'},
+  {n:'Hanoi',        c:'VN', region:'Vietnam'},
+  {n:'Seoul',        c:'KR', region:'South Korea'},
+  {n:'Taipei',       c:'TW', region:'Taiwan'},
+  {n:'Hong Kong',    c:'HK', region:'Hong Kong'},
 ];
 
 const countryFlags = {
   IN:'🇮🇳', GB:'🇬🇧', US:'🇺🇸', FR:'🇫🇷', JP:'🇯🇵',
   AE:'🇦🇪', SG:'🇸🇬', AU:'🇦🇺', CA:'🇨🇦', DE:'🇩🇪',
   RU:'🇷🇺', CN:'🇨🇳', TH:'🇹🇭', TR:'🇹🇷', EG:'🇪🇬',
-  PK:'🇵🇰', BD:'🇧🇩',
+  PK:'🇵🇰', BD:'🇧🇩', LK:'🇱🇰', NP:'🇳🇵', AF:'🇦🇫',
+  IR:'🇮🇷', IQ:'🇮🇶', SA:'🇸🇦', KW:'🇰🇼', QA:'🇶🇦',
+  OM:'🇴🇲', KE:'🇰🇪', NG:'🇳🇬', ZA:'🇿🇦', MA:'🇲🇦',
+  ET:'🇪🇹', NL:'🇳🇱', BE:'🇧🇪', AT:'🇦🇹', CH:'🇨🇭',
+  IT:'🇮🇹', ES:'🇪🇸', PT:'🇵🇹', SE:'🇸🇪', NO:'🇳🇴',
+  DK:'🇩🇰', FI:'🇫🇮', PL:'🇵🇱', CZ:'🇨🇿', HU:'🇭🇺',
+  GR:'🇬🇷', AR:'🇦🇷', BR:'🇧🇷', MX:'🇲🇽', PE:'🇵🇪',
+  CO:'🇨🇴', CL:'🇨🇱', MY:'🇲🇾', ID:'🇮🇩', PH:'🇵🇭',
+  VN:'🇻🇳', KR:'🇰🇷', TW:'🇹🇼', HK:'🇭🇰',
 };
+
+// Popular cities to show on focus (before typing)
+const popularCities = ['Mumbai','Delhi','Bangalore','London','New York','Dubai','Tokyo','Paris','Singapore','Sydney'];
 
 const inp  = document.getElementById('cityInput');
 const sbox = document.getElementById('suggestionsBox');
@@ -1268,48 +1402,102 @@ let activeIdx = -1;
 let currentMatches = [];
 
 function highlightMatch(str, q) {
+  if (!q) return str;
   const i = str.toLowerCase().indexOf(q.toLowerCase());
   if (i < 0) return str;
   return str.slice(0, i) + '<mark>' + str.slice(i, i + q.length) + '</mark>' + str.slice(i + q.length);
 }
 
-function renderSuggestions(q) {
-  // remove old items (keep header)
-  sbox.querySelectorAll('.sugg-item').forEach(el => el.remove());
-  currentMatches = cities.filter(c =>
-    c.n.toLowerCase().startsWith(q.toLowerCase()) ||
-    c.n.toLowerCase().includes(q.toLowerCase())
-  ).slice(0, 6);
-  if (!currentMatches.length) { sbox.classList.remove('show'); return; }
-  activeIdx = -1;
-  currentMatches.forEach((c, i) => {
-    const d = document.createElement('div');
-    d.className = 'sugg-item';
-    d.dataset.idx = i;
-    d.innerHTML = `
-      <div class="sugg-flag">${countryFlags[c.c] || '🌐'}</div>
-      <div class="sugg-body">
-        <div class="sugg-name">${highlightMatch(c.n, q)}</div>
-        <div class="sugg-meta">${c.region} · ${c.c}</div>
-      </div>
-      <div class="sugg-arrow">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-      </div>`;
-    d.addEventListener('mousedown', e => {
-      e.preventDefault();
-      inp.value = c.n;
-      sbox.classList.remove('show');
-      saveRecent(c.n);
-      document.getElementById('searchForm').submit();
-    });
-    sbox.appendChild(d);
+// Score a city match — lower score = better match
+function scoreMatch(city, q) {
+  const name = city.n.toLowerCase();
+  const qLow = q.toLowerCase();
+  if (name === qLow) return 0;
+  if (name.startsWith(qLow)) return 1;
+  if (name.includes(qLow)) return 2;
+  return 3;
+}
+
+function buildSuggItem(c, q, isPopular) {
+  const d = document.createElement('div');
+  d.className = 'sugg-item';
+  d.innerHTML = `
+    <div class="sugg-flag">${countryFlags[c.c] || '🌐'}</div>
+    <div class="sugg-body">
+      <div class="sugg-name">${highlightMatch(c.n, q)}</div>
+      <div class="sugg-meta">${c.region} · ${c.c}${isPopular ? ' · <span style="color:var(--accent);font-weight:700">Popular</span>' : ''}</div>
+    </div>
+    <div class="sugg-arrow">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+    </div>`;
+  d.addEventListener('mousedown', e => {
+    e.preventDefault();
+    inp.value = c.n;
+    closeSugg();
+    saveRecent(c.n);
+    document.getElementById('searchForm').submit();
   });
+  return d;
+}
+
+function closeSugg() {
+  sbox.classList.remove('show');
+  activeIdx = -1;
+  currentMatches = [];
+}
+
+function renderSuggestions(q) {
+  // Remove old items (keep header)
+  sbox.querySelectorAll('.sugg-item, .sugg-empty, .sugg-section').forEach(el => el.remove());
+
+  if (!q) {
+    // Show popular cities on focus
+    const header = sbox.querySelector('.sugg-header');
+    header.textContent = 'Popular Cities';
+    currentMatches = popularCities.map(name => cities.find(c => c.n === name)).filter(Boolean);
+    currentMatches.forEach(c => sbox.appendChild(buildSuggItem(c, '', true)));
+    activeIdx = -1;
+    sbox.classList.add('show');
+    return;
+  }
+
+  // Update header
+  sbox.querySelector('.sugg-header').textContent = 'Suggestions';
+
+  // Filter + sort by score
+  const matches = cities
+    .filter(c =>
+      c.n.toLowerCase().startsWith(q.toLowerCase()) ||
+      c.n.toLowerCase().includes(q.toLowerCase()) ||
+      c.region.toLowerCase().includes(q.toLowerCase())
+    )
+    .map(c => ({ ...c, _score: scoreMatch(c, q) }))
+    .sort((a, b) => a._score - b._score)
+    .slice(0, 7);
+
+  if (!matches.length) {
+    // No results state
+    const empty = document.createElement('div');
+    empty.className = 'sugg-empty';
+    empty.innerHTML = `
+      <div style="font-size:22px;margin-bottom:6px">🔍</div>
+      <div style="font-size:13px;font-weight:600;color:var(--text-2)">No matches for "<strong>${q}</strong>"</div>
+      <div style="font-size:11px;color:var(--text-3);margin-top:3px">Try a different spelling or press Search</div>`;
+    sbox.appendChild(empty);
+    currentMatches = [];
+    activeIdx = -1;
+    sbox.classList.add('show');
+    return;
+  }
+
+  currentMatches = matches;
+  activeIdx = -1;
+  matches.forEach(c => sbox.appendChild(buildSuggItem(c, q, false)));
   sbox.classList.add('show');
 }
 
 inp.addEventListener('input', function() {
   const q = this.value.trim();
-  if (q.length < 1) { sbox.classList.remove('show'); return; }
   renderSuggestions(q);
 });
 
@@ -1322,23 +1510,32 @@ inp.addEventListener('keydown', function(e) {
   } else if (e.key === 'ArrowUp') {
     e.preventDefault();
     activeIdx = Math.max(activeIdx - 1, -1);
+    if (activeIdx === -1) inp.value = inp.dataset.typed || inp.value;
   } else if (e.key === 'Enter' && activeIdx >= 0) {
     e.preventDefault();
     const city = currentMatches[activeIdx].n;
     inp.value = city;
-    sbox.classList.remove('show');
+    closeSugg();
     saveRecent(city);
     document.getElementById('searchForm').submit();
     return;
   } else if (e.key === 'Escape') {
-    sbox.classList.remove('show'); activeIdx = -1; return;
+    closeSugg(); return;
+  } else {
+    inp.dataset.typed = inp.value;
   }
-  items.forEach((el, i) => el.classList.toggle('active', i === activeIdx));
+  items.forEach((el, i) => {
+    el.classList.toggle('active', i === activeIdx);
+    if (i === activeIdx && currentMatches[i]) {
+      inp.value = currentMatches[i].n;
+    }
+  });
 });
 
-inp.addEventListener('blur', () => setTimeout(() => sbox.classList.remove('show'), 180));
+inp.addEventListener('blur', () => setTimeout(closeSugg, 200));
 inp.addEventListener('focus', function() {
-  if (this.value.trim().length >= 1) renderSuggestions(this.value.trim());
+  const q = this.value.trim();
+  renderSuggestions(q);
 });
 
 {% if weather %}
