@@ -39,14 +39,6 @@ def register():
             return """<script>alert('Password must be at least 8 characters long');window.location.href='/register';</script>"""
         if not any(char.isdigit() for char in password):
             return """<script>alert('Password must contain at least one number');window.location.href='/register';</script>"""
-        
-        # Check terms agreement
-        terms = request.form.get("terms")
-        if not terms:
-            return """<script>alert('You must agree to the Terms of Service');window.location.href='/register';</script>"""
-        
-        # Newsletter subscription
-        newsletter = request.form.get("newsletter", "off")
 
         with open("users.json", "r") as file:
             users = json.load(file)
@@ -61,7 +53,6 @@ def register():
             "mobile": mobile,
             "dob": dob,
             "password": password,
-            "newsletter": newsletter == "on",
             "is_new": True
         })
 
