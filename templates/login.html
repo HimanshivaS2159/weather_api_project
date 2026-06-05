@@ -314,6 +314,7 @@ body {
     </div>
   </div>
   <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+    <span id="themeIcon">☀️</span>
     <span id="themeText">Light</span>
   </button>
 
@@ -410,6 +411,18 @@ body {
   <strong>SkySense</strong> · Weather Intelligence Platform · Powered by OpenWeatherMap
 </footer>
 
+<!-- ERROR MODAL -->
+<div class="modal-overlay" id="errorModal">
+  <div class="modal-box error-modal">
+    <div class="modal-icon">⚠️</div>
+    <h2>Invalid Credentials</h2>
+    <p>The username or password you entered is incorrect. Please try again.</p>
+    <div class="modal-actions">
+      <button class="modal-confirm" onclick="closeErrorModal()">OK</button>
+    </div>
+  </div>
+</div>
+
 <script>
 function togglePwd() {
   const inp = document.getElementById('password');
@@ -423,6 +436,11 @@ function togglePwd() {
   }
 }
 
+// Modal Functions
+function openErrorModal() { document.getElementById('errorModal').classList.add('open') }
+function closeErrorModal() { document.getElementById('errorModal').classList.remove('open') }
+document.getElementById('errorModal').addEventListener('click', e => { if (e.target === document.getElementById('errorModal')) closeErrorModal() });
+
 // Theme Toggle
 function toggleTheme() {
   const html = document.documentElement;
@@ -434,8 +452,15 @@ function toggleTheme() {
 }
 
 function updateThemeButton(theme) {
+  const icon = document.getElementById('themeIcon');
   const text = document.getElementById('themeText');
-  text.textContent = theme === 'dark' ? 'Dark' : 'Light';
+  if (theme === 'dark') {
+    icon.textContent = '🌙';
+    text.textContent = 'Dark';
+  } else {
+    icon.textContent = '☀️';
+    text.textContent = 'Light';
+  }
 }
 
 // Initialize theme on page load
@@ -443,6 +468,11 @@ function updateThemeButton(theme) {
   const savedTheme = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeButton(savedTheme);
+  
+  // Show error modal if error flag is set
+  {% if error %}
+  setTimeout(() => openErrorModal(), 100);
+  {% endif %}
 })();
 </script>
 </body>

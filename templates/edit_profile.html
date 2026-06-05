@@ -292,6 +292,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
   </div>
   <div class="nav-right">
     <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+      <span id="themeIcon">☀️</span>
       <span id="themeText">Light</span>
     </button>
     <a href="/dashboard" class="nav-btn back">
@@ -311,10 +312,10 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
     </div>
     <div class="hero-right">
       <div class="user-badge">
-        <div class="user-avatar">{{ user.name[0].upper() }}</div>
+        <div class="user-avatar">👤</div>
         <div>
           <div class="user-badge-name">{{ user.username }}</div>
-          <div class="user-badge-role">👤 Member</div>
+          <div class="user-badge-role">Account Settings</div>
         </div>
       </div>
     </div>
@@ -461,7 +462,7 @@ function togglePwd(fieldId, iconId) {
 
 function showToast(msg, success = true) {
   const t = document.getElementById('toast');
-  t.textContent = (success ? '✅ ' : '❌ ') + msg;
+  t.textContent = (success ? 'Success: ' : 'Error: ') + msg;
   t.style.background = success ? '#0f172a' : 'var(--rose)';
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3200);
@@ -478,8 +479,15 @@ function toggleTheme() {
 }
 
 function updateThemeButton(theme) {
+  const icon = document.getElementById('themeIcon');
   const text = document.getElementById('themeText');
-  text.textContent = theme === 'dark' ? 'Dark' : 'Light';
+  if (theme === 'dark') {
+    icon.textContent = '🌙';
+    text.textContent = 'Dark';
+  } else {
+    icon.textContent = '☀️';
+    text.textContent = 'Light';
+  }
 }
 
 // Initialize theme on page load

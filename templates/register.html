@@ -266,6 +266,7 @@ body {
   <div style="display:flex; align-items:center; gap:8px">
     <div class="nav-pill">New Account</div>
     <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+      <span id="themeIcon">☀️</span>
       <span id="themeText">Light</span>
     </button>
   </div>
@@ -284,9 +285,9 @@ body {
           <div class="ch-sub">Join SkySense and get real-time weather intelligence</div>
         </div>
         <div class="ch-right">
-          <div class="ch-stat">🌡️ Live weather data</div>
-          <div class="ch-stat">🤖 AI weather assistant</div>
-          <div class="ch-stat">🗺️ Interactive maps</div>
+          <div class="ch-stat">Live weather data</div>
+          <div class="ch-stat">AI weather assistant</div>
+          <div class="ch-stat">Interactive maps</div>
         </div>
       </div>
     </div>
@@ -355,7 +356,7 @@ body {
         </div>
 
         <button type="submit" class="submit-btn" style="width:100%; display:flex; align-items:center; justify-content:center; gap:8px">
-          Create Account 🚀
+          Create Account
         </button>
 
       </form>
@@ -364,7 +365,7 @@ body {
     <!-- CARD FOOTER -->
     <div class="card-footer">
       <div class="alt-link">Already have an account? <a href="/login">Sign in here</a></div>
-      <div class="footer-note">🔒 Your data is stored securely</div>
+      <div class="footer-note">Your data is stored securely</div>
     </div>
 
   </div>
@@ -410,8 +411,15 @@ function toggleTheme() {
 }
 
 function updateThemeButton(theme) {
+  const icon = document.getElementById('themeIcon');
   const text = document.getElementById('themeText');
-  text.textContent = theme === 'dark' ? 'Dark' : 'Light';
+  if (theme === 'dark') {
+    icon.textContent = '🌙';
+    text.textContent = 'Dark';
+  } else {
+    icon.textContent = '☀️';
+    text.textContent = 'Light';
+  }
 }
 
 // Initialize theme on page load

@@ -622,6 +622,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
   </div>
   <div class="nav-right">
     <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+      <span id="themeIcon">☀️</span>
       <span id="themeText">Light</span>
     </button>
     <a href="/edit-profile" class="nav-btn edit">
@@ -640,10 +641,10 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
     <div>
       <div class="hero-eyebrow">Dashboard</div>
       {% if is_new %}
-      <h1>Welcome, <span class="name">{{ user.name }}</span>! 🎉</h1>
+      <h1>Welcome, <span class="name">{{ user.name }}</span></h1>
       <p class="hero-sub">Your SkySense account is ready — search a city to get started.</p>
       {% else %}
-      <h1>Welcome back, <span class="name">{{ user.name }}</span> 👋</h1>
+      <h1>Welcome back, <span class="name">{{ user.name }}</span></h1>
       <p class="hero-sub">Search any city for real-time conditions, charts, and forecasts.</p>
       {% endif %}
     </div>
@@ -700,7 +701,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
               </div>
             </div>
             <div class="whero-cond">
-              {{ weather.condition }}
+              <span id="weatherIcon"></span> {{ weather.condition }}
             </div>
             <div class="whero-feels" id="heroFeels">Feels like {{ weather.feels_c }}°C</div>
           </div>
@@ -731,27 +732,27 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
   <!-- METRIC TILES -->
   <div class="section-label fade-up d2">Current Conditions — {{ weather.city }}</div>
   <div class="metrics-strip fade-up d2">
-    <div class="metric-tile" style="--tile-accent:#2563eb;--tile-bg:#eff6ff">
+    <div class="metric-tile glassmorphism" style="--tile-accent:#2563eb;--tile-bg:rgba(37,99,235,0.1)">
       <div class="metric-label">Temperature</div>
       <div class="metric-value" id="tileTemp">{{ weather.temperature_c }}<span class="metric-unit" id="tileTempU">°C</span></div>
       <div class="metric-sub" id="tileTempSub">Feels {{ weather.feels_c }}°C</div>
     </div>
-    <div class="metric-tile" style="--tile-accent:#0891b2;--tile-bg:#ecfeff">
+    <div class="metric-tile glassmorphism" style="--tile-accent:#0891b2;--tile-bg:rgba(8,145,178,0.1)">
       <div class="metric-label">Humidity</div>
       <div class="metric-value">{{ weather.humidity }}<span class="metric-unit">%</span></div>
       <div class="metric-sub">Relative humidity</div>
     </div>
-    <div class="metric-tile" style="--tile-accent:#d97706;--tile-bg:#fffbeb">
+    <div class="metric-tile glassmorphism" style="--tile-accent:#d97706;--tile-bg:rgba(217,119,6,0.1)">
       <div class="metric-label">Pressure</div>
       <div class="metric-value">{{ weather.pressure }}<span class="metric-unit" style="font-size:11px"> hPa</span></div>
       <div class="metric-sub">Atmospheric</div>
     </div>
-    <div class="metric-tile" style="--tile-accent:#16a34a;--tile-bg:#f0fdf4">
+    <div class="metric-tile glassmorphism" style="--tile-accent:#16a34a;--tile-bg:rgba(22,163,74,0.1)">
       <div class="metric-label">Wind Speed</div>
       <div class="metric-value">{{ weather.wind }}<span class="metric-unit" style="font-size:11px"> m/s</span></div>
       <div class="metric-sub">Surface wind</div>
     </div>
-    <div class="metric-tile" style="--tile-accent:#7c3aed;--tile-bg:#f5f3ff">
+    <div class="metric-tile glassmorphism" style="--tile-accent:#7c3aed;--tile-bg:rgba(124,58,237,0.1)">
       <div class="metric-label">Visibility</div>
       <div class="metric-value">{{ weather.visibility }}<span class="metric-unit" style="font-size:11px"> km</span></div>
       <div class="metric-sub">Clear sight range</div>
@@ -1121,7 +1122,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
   background:linear-gradient(135deg,#2563eb,#1d4ed8);
   border:none; cursor:pointer; color:#fff;
   display:flex; align-items:center; justify-content:center;
-  font-size:18px; font-weight:600;
+  font-size:20px; font-weight:600;
   transition:all .3s cubic-bezier(.34,1.56,.64,1);
 }
 .chat-send:hover { transform:translateY(-3px) scale(1.1); box-shadow:0 8px 24px rgba(37,99,235,.5) }
@@ -1856,8 +1857,15 @@ function toggleTheme() {
 }
 
 function updateThemeButton(theme) {
+  const icon = document.getElementById('themeIcon');
   const text = document.getElementById('themeText');
-  text.textContent = theme === 'dark' ? 'Dark' : 'Light';
+  if (theme === 'dark') {
+    icon.textContent = '🌙';
+    text.textContent = 'Dark';
+  } else {
+    icon.textContent = '☀️';
+    text.textContent = 'Light';
+  }
 }
 
 // Initialize theme on page load
@@ -1865,6 +1873,19 @@ function updateThemeButton(theme) {
   const savedTheme = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeButton(savedTheme);
+  
+  // Set weather icon based on condition
+  const condition = '{{ weather.condition }}'.toLowerCase();
+  const iconEl = document.getElementById('weatherIcon');
+  if (iconEl) {
+    if (condition.includes('clear')) iconEl.textContent = '☀️';
+    else if (condition.includes('cloud')) iconEl.textContent = '☁️';
+    else if (condition.includes('rain')) iconEl.textContent = '🌧️';
+    else if (condition.includes('snow')) iconEl.textContent = '❄️';
+    else if (condition.includes('thunder')) iconEl.textContent = '⚡';
+    else if (condition.includes('mist') || condition.includes('fog')) iconEl.textContent = '🌫️';
+    else iconEl.textContent = '🌤️';
+  }
 })();
 </script>
 
