@@ -84,7 +84,7 @@ def login():
                         json.dump(users, f, indent=4)
                 return redirect("/dashboard")
 
-        return """<script>alert('Invalid Username or Password');window.location.href='/login';</script>"""
+        return render_template("login.html", error=True)
 
     return render_template("login.html")
 
