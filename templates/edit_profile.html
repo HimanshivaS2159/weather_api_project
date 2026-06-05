@@ -284,7 +284,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">
-    <div class="logo-icon">SS</div>
+    <div class="logo-icon">🌤️</div>
     <div class="logo-text">
       <h2>SkySense</h2>
       <p>Weather Intelligence</p>
@@ -314,7 +314,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
         <div class="user-avatar">{{ user.name[0].upper() }}</div>
         <div>
           <div class="user-badge-name">{{ user.username }}</div>
-          <div class="user-badge-role">Member</div>
+          <div class="user-badge-role">👤 Member</div>
         </div>
       </div>
     </div>
@@ -326,7 +326,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
     <div class="section-label fade-up d1">Profile</div>
     <div class="panel fade-up d1">
       <div class="panel-header">
-        <div class="panel-icon blue">PI</div>
+        <div class="panel-icon blue">👤</div>
         <div>
           <div class="panel-title">Personal Information</div>
           <div class="panel-sub">Update your name, mobile number, and date of birth</div>
@@ -374,7 +374,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
     <div class="section-label fade-up d2">Security</div>
     <div class="panel fade-up d2">
       <div class="panel-header">
-        <div class="panel-icon amber">CP</div>
+        <div class="panel-icon amber">🔒</div>
         <div>
           <div class="panel-title">Change Password</div>
           <div class="panel-sub">Leave all fields empty to keep your current password</div>
@@ -461,7 +461,7 @@ function togglePwd(fieldId, iconId) {
 
 function showToast(msg, success = true) {
   const t = document.getElementById('toast');
-  t.textContent = (success ? 'Success: ' : 'Error: ') + msg;
+  t.textContent = (success ? '✅ ' : '❌ ') + msg;
   t.style.background = success ? '#0f172a' : 'var(--rose)';
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 3200);
