@@ -24,3 +24,7 @@ Thumbs.db
 
 # Project specific
 *.log
+
+# Sensitive data
+users.json
+weather.json
