@@ -887,6 +887,18 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
   </div>
 </div>
 
+<!-- CITY NOT FOUND MODAL -->
+<div class="modal-overlay" id="cityNotFoundModal">
+  <div class="modal-box error-modal">
+    <div class="modal-icon">🔍</div>
+    <h2>City Not Found</h2>
+    <p>The city you searched for could not be found. Please check the spelling and try again.</p>
+    <div class="modal-actions">
+      <button class="modal-confirm" onclick="closeCityNotFoundModal()">OK</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast">
   <span id="toastMsg">Getting your location…</span>
@@ -1144,8 +1156,11 @@ tick(); setInterval(tick, 1000);
 // Modal
 function openModal()  { document.getElementById('logoutModal').classList.add('open') }
 function closeModal() { document.getElementById('logoutModal').classList.remove('open') }
+function openCityNotFoundModal() { document.getElementById('cityNotFoundModal').classList.add('open') }
+function closeCityNotFoundModal() { document.getElementById('cityNotFoundModal').classList.remove('open') }
 document.getElementById('logoutModal').addEventListener('click', e => { if (e.target === document.getElementById('logoutModal')) closeModal() });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal() });
+document.getElementById('cityNotFoundModal').addEventListener('click', e => { if (e.target === document.getElementById('cityNotFoundModal')) closeCityNotFoundModal() });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); closeCityNotFoundModal(); } });
 
 // Toast
 function showToast(msg, duration = 3000) {
@@ -1882,6 +1897,11 @@ function updateThemeButton(theme) {
     else if (condition.includes('mist') || condition.includes('fog')) iconEl.textContent = '🌫️';
     else iconEl.textContent = '🌤️';
   }
+  
+  // Show city not found modal if flag is set
+  {% if city_not_found %}
+  setTimeout(() => openCityNotFoundModal(), 100);
+  {% endif %}
 })();
 </script>
 

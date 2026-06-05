@@ -141,7 +141,14 @@ def dashboard():
                 "lon": data["coord"]["lon"],
             }
         else:
-            return """<script>alert('City not found. Please check the name and try again.');window.location.href='/dashboard';</script>"""
+            is_new = current_user.get("is_new", False)
+            return render_template(
+                "dashboard.html",
+                user=current_user,
+                weather=weather,
+                is_new=is_new,
+                city_not_found=True
+            )
 
     is_new = current_user.get("is_new", False)
 
