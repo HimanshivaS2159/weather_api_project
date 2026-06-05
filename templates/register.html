@@ -28,6 +28,25 @@
   --r-sm: 10px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
   --font: 'Inter', sans-serif;
 }
+
+[data-theme="dark"] {
+  --bg:           #0f172a;
+  --bg-white:     #1e293b;
+  --bg-soft:      #334155;
+  --accent:       #3b82f6;
+  --accent-light: #1e3a5f;
+  --accent-border:#1e40af;
+  --rose:         #f43f5e;
+  --green:        #22c55e;
+  --green-light:  #14532d;
+  --text-1:       #f8fafc;
+  --text-2:       #cbd5e1;
+  --text-3:       #94a3b8;
+  --border:       #334155;
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.3),0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md:    0 4px 14px rgba(0,0,0,0.4),0 2px 6px rgba(0,0,0,0.3);
+  --shadow-lg:    0 12px 36px rgba(0,0,0,0.5),0 4px 12px rgba(0,0,0,0.4);
+}
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
 html { scroll-behavior:smooth }
 
@@ -68,6 +87,13 @@ body {
   font-size: 11px; font-weight: 700;
   padding: 5px 14px; border-radius: 20px;
 }
+.theme-toggle {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:7px 14px; border-radius:var(--r-sm); border:1px solid var(--border);
+  cursor:pointer; transition:all .18s; background:var(--bg-white); color:var(--text-2);
+  font-family:var(--font); font-size:12px; font-weight:600;
+}
+.theme-toggle:hover { background:var(--bg-soft); color:var(--text-1) }
 
 /* ─── MAIN ─── */
 .main {
@@ -231,13 +257,18 @@ body {
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">
-    <div class="logo-icon">🌤</div>
+    <div class="logo-icon">SS</div>
     <div class="logo-text">
       <h2>SkySense</h2>
       <p>Weather Intelligence</p>
     </div>
   </div>
-  <div class="nav-pill">New Account</div>
+  <div style="display:flex; align-items:center; gap:8px">
+    <div class="nav-pill">New Account</div>
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+      <span id="themeText">Light</span>
+    </button>
+  </div>
 </nav>
 
 <!-- MAIN -->
@@ -253,9 +284,9 @@ body {
           <div class="ch-sub">Join SkySense and get real-time weather intelligence</div>
         </div>
         <div class="ch-right">
-          <div class="ch-stat">🌡️ Live weather data</div>
-          <div class="ch-stat">🤖 AI weather assistant</div>
-          <div class="ch-stat">🗺️ Interactive maps</div>
+          <div class="ch-stat">Live weather data</div>
+          <div class="ch-stat">AI weather assistant</div>
+          <div class="ch-stat">Interactive maps</div>
         </div>
       </div>
     </div>
@@ -271,16 +302,14 @@ body {
           <div class="field full">
             <label for="name">Full Name</label>
             <div class="field-wrap">
-              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-              <input type="text" id="name" name="name" placeholder="Enter your full name" required autocomplete="name">
+              <input type="text" id="name" name="name" placeholder="Enter your full name" required autocomplete="name" style="padding-left:14px">
             </div>
           </div>
 
           <div class="field">
             <label for="username">Username</label>
             <div class="field-wrap">
-              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <input type="text" id="username" name="username" placeholder="Choose a username" required minlength="4" autocomplete="username">
+              <input type="text" id="username" name="username" placeholder="Choose a username" required minlength="4" autocomplete="username" style="padding-left:14px">
             </div>
             <div class="field-hint">At least 4 characters</div>
           </div>
@@ -288,8 +317,7 @@ body {
           <div class="field">
             <label for="mobile">Mobile Number</label>
             <div class="field-wrap">
-              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1"/></svg>
-              <input type="tel" id="mobile" name="mobile" placeholder="10-digit mobile number" pattern="[0-9]{10}" maxlength="10" required autocomplete="tel">
+              <input type="tel" id="mobile" name="mobile" placeholder="10-digit mobile number" pattern="[0-9]{10}" maxlength="10" required autocomplete="tel" style="padding-left:14px">
             </div>
             <div class="field-hint">10 digits, numbers only</div>
           </div>
@@ -297,8 +325,7 @@ body {
           <div class="field">
             <label for="dob">Date of Birth</label>
             <div class="field-wrap">
-              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-              <input type="date" id="dob" name="dob" required style="padding-left:42px">
+              <input type="date" id="dob" name="dob" required style="padding-left:14px">
             </div>
           </div>
 
@@ -311,8 +338,7 @@ body {
           <div class="field full">
             <label for="password">Password</label>
             <div class="field-wrap">
-              <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-              <input type="password" id="password" name="password" placeholder="Create a strong password" minlength="8" maxlength="20" required autocomplete="new-password" oninput="checkStrength(this.value)">
+              <input type="password" id="password" name="password" placeholder="Create a strong password" minlength="8" maxlength="20" required autocomplete="new-password" oninput="checkStrength(this.value)" style="padding-left:14px">
             </div>
             <div class="field-hint">Min 8 characters, must include a number</div>
             <div class="pwd-strength" id="pwdStrength">
@@ -326,10 +352,23 @@ body {
             </div>
           </div>
 
+          <div class="field full">
+            <label>
+              <input type="checkbox" id="terms" name="terms" required>
+              I agree to the Terms of Service and Privacy Policy
+            </label>
+          </div>
+
+          <div class="field full">
+            <label>
+              <input type="checkbox" id="newsletter" name="newsletter">
+              Subscribe to weather alerts and updates
+            </label>
+          </div>
+
         </div>
 
         <button type="submit" class="submit-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
           Create My Account
         </button>
 
@@ -339,7 +378,7 @@ body {
     <!-- CARD FOOTER -->
     <div class="card-footer">
       <div class="alt-link">Already have an account? <a href="/login">Sign in here</a></div>
-      <div class="footer-note">🔒 Your data is stored securely</div>
+      <div class="footer-note">Your data is stored securely</div>
     </div>
 
   </div>
@@ -373,6 +412,28 @@ function checkStrength(val) {
   label.textContent = score <= 1 ? 'Weak' : score <= 2 ? 'Fair' : score === 3 ? 'Good' : 'Strong';
   label.style.color = score <= 1 ? 'var(--rose)' : score <= 2 ? '#f59e0b' : 'var(--green)';
 }
+
+// Theme Toggle
+function toggleTheme() {
+  const html = document.documentElement;
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateThemeButton(newTheme);
+}
+
+function updateThemeButton(theme) {
+  const text = document.getElementById('themeText');
+  text.textContent = theme === 'dark' ? 'Dark' : 'Light';
+}
+
+// Initialize theme on page load
+(function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeButton(savedTheme);
+})();
 </script>
 </body>
 </html>

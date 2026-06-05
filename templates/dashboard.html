@@ -33,6 +33,28 @@
   --nav-h: 64px;
   --font: 'Inter', sans-serif;
 }
+
+[data-theme="dark"] {
+  --bg:           #0f172a;
+  --bg-white:     #1e293b;
+  --bg-soft:      #334155;
+  --accent:       #3b82f6;
+  --accent-light: #1e3a5f;
+  --accent-border:#1e40af;
+  --teal:         #06b6d4;
+  --amber:        #f59e0b;
+  --rose:         #f43f5e;
+  --green:        #22c55e;
+  --green-light:  #14532d;
+  --purple:       #a855f7;
+  --text-1:       #f8fafc;
+  --text-2:       #cbd5e1;
+  --text-3:       #94a3b8;
+  --border:       #334155;
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.3),0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md:    0 4px 14px rgba(0,0,0,0.4),0 2px 6px rgba(0,0,0,0.3);
+  --shadow-lg:    0 12px 36px rgba(0,0,0,0.5),0 4px 12px rgba(0,0,0,0.4);
+}
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
 html { scroll-behavior:smooth }
 body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-height:100vh; overflow-x:hidden }
@@ -77,6 +99,13 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
 .nav-btn.edit:hover { background:#bbf7d0 }
 .nav-btn.logout { color:var(--rose); border-color:#fda4af; background:#fff1f2 }
 .nav-btn.logout:hover { background:#ffe4e6 }
+.theme-toggle {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:7px 14px; border-radius:var(--r-sm); border:1px solid var(--border);
+  cursor:pointer; transition:all .18s; background:var(--bg-white); color:var(--text-2);
+  font-family:var(--font); font-size:12px; font-weight:600;
+}
+.theme-toggle:hover { background:var(--bg-soft); color:var(--text-1) }
 
 /* ─── PAGE ─── */
 .page { width:92%; max-width:1300px; margin:0 auto; padding:32px 0 60px }
@@ -581,7 +610,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">
-    <div class="logo-icon">🌤</div>
+    <div class="logo-icon">SS</div>
     <div class="logo-text">
       <h2>SkySense</h2>
       <p>Weather Intelligence</p>
@@ -592,12 +621,13 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
     <span class="nav-date" id="navDate"></span>
   </div>
   <div class="nav-right">
+    <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+      <span id="themeText">Light</span>
+    </button>
     <a href="/edit-profile" class="nav-btn edit">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
       Account
     </a>
     <button class="nav-btn logout" onclick="openModal()">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
       Logout
     </button>
   </div>
@@ -610,7 +640,7 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
     <div>
       <div class="hero-eyebrow">Dashboard</div>
       {% if is_new %}
-      <h1>Welcome, <span class="name">{{ user.name }}</span>! <span class="emoji">🎉</span></h1>
+      <h1>Welcome, <span class="name">{{ user.name }}</span>!</h1>
       <p class="hero-sub">Your SkySense account is ready — search a city to get started.</p>
       {% else %}
       <h1>Welcome back, <span class="name">{{ user.name }}</span></h1>
@@ -633,18 +663,15 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
     <form method="POST" id="searchForm">
       <div class="search-inner">
         <div class="search-field" style="position:relative">
-          <svg class="s-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" name="city" id="cityInput" placeholder="Type a city name…" autocomplete="off" required>
+          <input type="text" name="city" id="cityInput" placeholder="Type a city name…" autocomplete="off" required style="padding-left:14px">
           <div class="suggestions-box" id="suggestionsBox">
             <div class="sugg-header">Suggestions</div>
           </div>
         </div>
         <button type="button" class="loc-btn" id="locBtn" onclick="useMyLocation()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/><circle cx="12" cy="12" r="9" stroke-dasharray="2 4"/></svg>
           My Location
         </button>
         <button type="submit" class="search-btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           Search
         </button>
       </div>
@@ -662,7 +689,6 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
         <div class="whero-inner">
           <div class="whero-left">
             <div class="whero-location">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
               {{ weather.city }}{% if weather.country %}, {{ weather.country }}{% endif %}
             </div>
             <div class="whero-temp-row">
@@ -674,7 +700,6 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
               </div>
             </div>
             <div class="whero-cond">
-              <img class="owm-icon" src="https://openweathermap.org/img/wn/{{ weather.icon }}@2x.png" alt="{{ weather.condition }}" onerror="this.style.display='none'">
               {{ weather.condition }}
             </div>
             <div class="whero-feels" id="heroFeels">Feels like {{ weather.feels_c }}°C</div>
@@ -707,33 +732,21 @@ body { font-family:var(--font); background:var(--bg); color:var(--text-1); min-h
   <div class="section-label fade-up d2">Current Conditions — {{ weather.city }}</div>
   <div class="metrics-strip fade-up d2">
     <div class="metric-tile" style="--tile-accent:#2563eb;--tile-bg:#eff6ff">
-      <div class="metric-icon-box">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 00-5 0v11.26a4.5 4.5 0 105 0z"/></svg>
-      </div>
       <div class="metric-label">Temperature</div>
       <div class="metric-value" id="tileTemp">{{ weather.temperature_c }}<span class="metric-unit" id="tileTempU">°C</span></div>
       <div class="metric-sub" id="tileTempSub">Feels {{ weather.feels_c }}°C</div>
     </div>
     <div class="metric-tile" style="--tile-accent:#0891b2;--tile-bg:#ecfeff">
-      <div class="metric-icon-box" style="color:#0891b2">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a7 7 0 00-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 00-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
-      </div>
       <div class="metric-label">Humidity</div>
       <div class="metric-value">{{ weather.humidity }}<span class="metric-unit">%</span></div>
       <div class="metric-sub">Relative humidity</div>
     </div>
     <div class="metric-tile" style="--tile-accent:#d97706;--tile-bg:#fffbeb">
-      <div class="metric-icon-box" style="color:#d97706">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      </div>
       <div class="metric-label">Pressure</div>
       <div class="metric-value">{{ weather.pressure }}<span class="metric-unit" style="font-size:11px"> hPa</span></div>
       <div class="metric-sub">Atmospheric</div>
     </div>
     <div class="metric-tile" style="--tile-accent:#16a34a;--tile-bg:#f0fdf4">
-      <div class="metric-icon-box" style="color:#16a34a">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.59 4.59A2 2 0 1111 8H2m10.59 11.41A2 2 0 1014 16H2m15.73-8.27A2.5 2.5 0 1119.5 12H2"/></svg>
-      </div>
       <div class="metric-label">Wind Speed</div>
       <div class="metric-value">{{ weather.wind }}<span class="metric-unit" style="font-size:11px"> m/s</span></div>
       <div class="metric-sub">Surface wind</div>
@@ -1816,6 +1829,28 @@ async function sendMessage() {
     input.focus();
   }
 }
+
+// Theme Toggle
+function toggleTheme() {
+  const html = document.documentElement;
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateThemeButton(newTheme);
+}
+
+function updateThemeButton(theme) {
+  const text = document.getElementById('themeText');
+  text.textContent = theme === 'dark' ? 'Dark' : 'Light';
+}
+
+// Initialize theme on page load
+(function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeButton(savedTheme);
+})();
 </script>
 
 </body>

@@ -28,6 +28,25 @@
   --r-sm: 10px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px;
   --font: 'Inter', sans-serif;
 }
+
+[data-theme="dark"] {
+  --bg:           #0f172a;
+  --bg-white:     #1e293b;
+  --bg-soft:      #334155;
+  --accent:       #3b82f6;
+  --accent-light: #1e3a5f;
+  --accent-border:#1e40af;
+  --rose:         #f43f5e;
+  --green:        #22c55e;
+  --green-light:  #14532d;
+  --text-1:       #f8fafc;
+  --text-2:       #cbd5e1;
+  --text-3:       #94a3b8;
+  --border:       #334155;
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.3),0 1px 2px rgba(0,0,0,0.2);
+  --shadow-md:    0 4px 14px rgba(0,0,0,0.4),0 2px 6px rgba(0,0,0,0.3);
+  --shadow-lg:    0 12px 36px rgba(0,0,0,0.5),0 4px 12px rgba(0,0,0,0.4);
+}
 *,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
 html { scroll-behavior:smooth }
 
@@ -72,6 +91,13 @@ body {
   padding: 5px 14px; border-radius: 20px;
   letter-spacing: .04em;
 }
+.theme-toggle {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:7px 14px; border-radius:var(--r-sm); border:1px solid var(--border);
+  cursor:pointer; transition:all .18s; background:var(--bg-white); color:var(--text-2);
+  font-family:var(--font); font-size:12px; font-weight:600;
+}
+.theme-toggle:hover { background:var(--bg-soft); color:var(--text-1) }
 
 /* ─── MAIN LAYOUT ─── */
 .main {
@@ -281,12 +307,15 @@ body {
 <!-- NAVBAR -->
 <nav class="navbar">
   <div class="logo">
-    <div class="logo-icon">🌤</div>
+    <div class="logo-icon">SS</div>
     <div class="logo-text">
       <h2>SkySense</h2>
       <p>Weather Intelligence</p>
     </div>
   </div>
+  <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+    <span id="themeText">Light</span>
+  </button>
 
 </nav>
 
@@ -298,7 +327,7 @@ body {
     <div class="left-panel">
       <div class="lp-top">
         <div class="lp-brand">
-          <div class="lp-brand-icon">🌤</div>
+          <div class="lp-brand-icon">SS</div>
           <div>
             <div class="lp-brand-name">SkySense</div>
             <div class="lp-brand-tag">Weather Intelligence</div>
@@ -309,21 +338,21 @@ body {
 
         <div class="lp-features">
           <div class="lp-feat">
-            <div class="lp-feat-icon">🌡️</div>
+            <div class="lp-feat-icon">TC</div>
             <div>
               <div class="lp-feat-text">Live Conditions</div>
               <div class="lp-feat-sub">Temperature, humidity, wind & more</div>
             </div>
           </div>
           <div class="lp-feat">
-            <div class="lp-feat-icon">🗺️</div>
+            <div class="lp-feat-icon">MP</div>
             <div>
               <div class="lp-feat-text">Interactive Maps</div>
               <div class="lp-feat-sub">Pinpoint any location on the globe</div>
             </div>
           </div>
           <div class="lp-feat">
-            <div class="lp-feat-icon">🤖</div>
+            <div class="lp-feat-icon">AI</div>
             <div>
               <div class="lp-feat-text">AI Weather Assistant</div>
               <div class="lp-feat-sub">Ask anything about weather</div>
@@ -346,24 +375,21 @@ body {
         <div class="field">
           <label for="username">Username</label>
           <div class="field-wrap">
-            <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-            <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="username">
+            <input type="text" id="username" name="username" placeholder="Enter your username" required autocomplete="username" style="padding-left:14px">
           </div>
         </div>
 
         <div class="field">
           <label for="password">Password</label>
           <div class="field-wrap">
-            <svg class="field-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-            <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password">
+            <input type="password" id="password" name="password" placeholder="Enter your password" required autocomplete="current-password" style="padding-left:14px">
             <button type="button" class="eye-btn" onclick="togglePwd()" title="Show/hide password">
-              <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              <span id="eyeIcon">Show</span>
             </button>
           </div>
         </div>
 
         <button type="submit" class="submit-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
           Sign In
         </button>
 
@@ -390,12 +416,34 @@ function togglePwd() {
   const icon = document.getElementById('eyeIcon');
   if (inp.type === 'password') {
     inp.type = 'text';
-    icon.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>';
+    icon.textContent = 'Hide';
   } else {
     inp.type = 'password';
-    icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    icon.textContent = 'Show';
   }
 }
+
+// Theme Toggle
+function toggleTheme() {
+  const html = document.documentElement;
+  const currentTheme = html.getAttribute('data-theme');
+  const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  html.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateThemeButton(newTheme);
+}
+
+function updateThemeButton(theme) {
+  const text = document.getElementById('themeText');
+  text.textContent = theme === 'dark' ? 'Dark' : 'Light';
+}
+
+// Initialize theme on page load
+(function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeButton(savedTheme);
+})();
 </script>
 </body>
 </html>
