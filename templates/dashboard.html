@@ -1414,8 +1414,10 @@ function scoreMatch(city, q) {
   const qLow = q.toLowerCase();
   if (name === qLow) return 0;
   if (name.startsWith(qLow)) return 1;
-  if (name.includes(qLow)) return 2;
-  return 3;
+  if (name.split(' ').some(w => w.startsWith(qLow))) return 2;
+  if (name.includes(qLow)) return 3;
+  if (city.region.toLowerCase().includes(qLow)) return 4;
+  return 5;
 }
 
 function buildSuggItem(c, q, isPopular) {
@@ -1458,11 +1460,13 @@ function renderSuggestions(q) {
     .filter(c =>
       c.n.toLowerCase().startsWith(q.toLowerCase()) ||
       c.n.toLowerCase().includes(q.toLowerCase()) ||
-      c.region.toLowerCase().includes(q.toLowerCase())
+      c.region.toLowerCase().includes(q.toLowerCase()) ||
+      c.n.toLowerCase().split(' ').some(word => word.startsWith(q.toLowerCase())) ||
+      c.c.toLowerCase() === q.toLowerCase()
     )
     .map(c => ({ ...c, _score: scoreMatch(c, q) }))
     .sort((a, b) => a._score - b._score)
-    .slice(0, 7);
+    .slice(0, 10);
 
   if (!matches.length) {
     // No results state
